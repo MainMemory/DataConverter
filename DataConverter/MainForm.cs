@@ -72,6 +72,7 @@ namespace DataConverter
 							d2.Append(item);
 					if (d2.Length % 2 == 1)
 						d2.Append('0');
+					data = d2.ToString();
 					List<byte> result = new List<byte>();
 					for (int i = 0; i < data.Length / 2; i++)
 						result.Add(byte.Parse(data.Substring(i * 2, 2), NumberStyles.HexNumber));
@@ -218,17 +219,26 @@ namespace DataConverter
 					richTextBox2.Text = Convert.ToBase64String(bytes);
 					break;
 				case "ascii":
+					for (int i = 0; i < bytes.Length; i++)
+						if (bytes[i] == 0)
+							bytes[i] = 0xA;
 					richTextBox2.Text = Encoding.ASCII.GetString(bytes);
 					break;
 				case "utf8":
 				case "utf-8":
 				case "text":
 				case "string":
+					for (int i = 0; i < bytes.Length; i++)
+						if (bytes[i] == 0)
+							bytes[i] = 0xA;
 					richTextBox2.Text = Encoding.UTF8.GetString(bytes);
 					break;
 				case "unicode":
 				case "utf16":
 				case "utf-16":
+					for (int i = 0; i < bytes.Length; i += 2)
+						if (bytes[i] == 0 && bytes[i + 1] == 0)
+							bytes[i] = 0xA;
 					richTextBox2.Text = Encoding.Unicode.GetString(bytes);
 					break;
 				default:
