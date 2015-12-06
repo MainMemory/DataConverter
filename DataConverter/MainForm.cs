@@ -219,34 +219,25 @@ namespace DataConverter
 					richTextBox2.Text = Convert.ToBase64String(bytes);
 					break;
 				case "ascii":
-					for (int i = 0; i < bytes.Length; i++)
-						if (bytes[i] == 0)
-							bytes[i] = 0xA;
-					richTextBox2.Text = Encoding.ASCII.GetString(bytes);
+					richTextBox2.Text = Encoding.ASCII.GetString(bytes).Replace('\0', '\n');
 					break;
 				case "utf8":
 				case "utf-8":
 				case "text":
 				case "string":
-					for (int i = 0; i < bytes.Length; i++)
-						if (bytes[i] == 0)
-							bytes[i] = 0xA;
-					richTextBox2.Text = Encoding.UTF8.GetString(bytes);
+					richTextBox2.Text = Encoding.UTF8.GetString(bytes).Replace('\0', '\n');
 					break;
 				case "unicode":
 				case "utf16":
 				case "utf-16":
-					for (int i = 0; i < bytes.Length; i += 2)
-						if (bytes[i] == 0 && bytes[i + 1] == 0)
-							bytes[i] = 0xA;
-					richTextBox2.Text = Encoding.Unicode.GetString(bytes);
+					richTextBox2.Text = Encoding.Unicode.GetString(bytes).Replace('\0', '\n');
 					break;
 				default:
 					int cdpg = 0;
 					if (int.TryParse(type, out cdpg))
-						richTextBox2.Text = Encoding.GetEncoding(cdpg).GetString(bytes);
+						richTextBox2.Text = Encoding.GetEncoding(cdpg).GetString(bytes).Replace('\0', '\n');
 					else
-						richTextBox2.Text = Encoding.GetEncoding(type).GetString(bytes);
+						richTextBox2.Text = Encoding.GetEncoding(type).GetString(bytes).Replace('\0', '\n');
 					break;
 			}
 		}
